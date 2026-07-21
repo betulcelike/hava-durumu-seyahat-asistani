@@ -45,8 +45,10 @@ Bir önceki analiz raporun şuydu:
 
 Kullanıcının takip sorusu: "${kullaniciPlani}"
 
-Lütfen bir önceki şablonu (1, 2, 3, 4 bölümlerini) TEKRARLAMA!
-Sadece ve sadece kullanıcının sorduğu soruya odaklanarak, hava durumu ve ilgili saatlerle bağlantılı olacak şekilde doğrudan, kısa ve net bir cevap ver.
+Kurallar:
+1. Yanıtında kesinlikle hiçbir emoji veya grafiksel simge (ikon) kullanma.
+2. Bir önceki şablonu (1, 2, 3, 4 bölümlerini) TEKRARLAMA!
+3. Sadece ve sadece kullanıcının sorduğu soruya odaklanarak, hava durumu ve ilgili saatlerle bağlantılı olacak şekilde doğrudan, kısa ve net bir cevap ver.
 `;
   } else {
     prompt = `
@@ -57,11 +59,13 @@ ${JSON.stringify(weatherData, null, 2)}
 
 Kullanıcı Planı: "${kullaniciPlani}"
 
-Lütfen şu formatta yanıt ver:
-1. Hava Durumu Yorumu (Sıcaklığı plana göre değerlendir).
-2. Kıyafet & Aksesuar Önerileri (Katmanlı giyim, ayakkabı, şemsiye vb.).
-3. Etkinlik İçin En İdeal Saat Aralığı.
-4. Pratik Tavsiyeler.
+Kurallar:
+1. Yanıtında kesinlikle hiçbir emoji veya grafiksel simge (ikon) kullanma.
+2. Lütfen şu formatta yanıt ver:
+   1. Hava Durumu Yorumu (Sıcaklığı plana göre değerlendir).
+   2. Kıyafet & Aksesuar Önerileri (Katmanlı giyim, ayakkabı, şemsiye vb.).
+   3. Etkinlik İçin En İdeal Saat Aralığı.
+   4. Pratik Tavsiyeler.
 `;
   }
 
