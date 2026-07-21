@@ -20,6 +20,7 @@ const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
 const app = express();
 const port = process.env.PORT || 3000;
+const host = process.env.HOST || 'localhost';
 
 // Middleware
 app.use(express.json());
@@ -146,7 +147,7 @@ app.post('/api/analyze', async (req, res) => {
 
 // Sunucuyu Başlat
 app.listen(port, () => {
-  const url = `http://localhost:${port}`;
+  const url = port === 80 ? `http://${host}` : `http://${host}:${port}`;
   console.log(`🚀 Sunucu ${url} adresinde çalışmaya başladı.`);
   
   // WSL (Windows Subsystem for Linux) ortamını tespit et
