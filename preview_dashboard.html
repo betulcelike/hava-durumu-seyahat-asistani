@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Akıllı Hava Durumu & Seyahat Danışmanı - Önizleme</title>
+  <!-- Google Fonts: Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-color: #0b0c16;
+      --panel-bg: rgba(20, 21, 38, 0.6);
+      --border-color: rgba(255, 255, 255, 0.08);
+      --text-main: #f3f4f6;
+      --text-muted: #9ca3af;
+      --primary: #6366f1;
+      --primary-hover: #4f46e5;
+      --accent: #d946ef;
+      --glow-color: rgba(99, 102, 241, 0.15);
+      --font-family: 'Outfit', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      background-image: 
+        radial-gradient(circle at 10% 20%, rgba(99, 102, 241, 0.15) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(217, 70, 239, 0.1) 0%, transparent 45%);
+      background-attachment: fixed;
+      font-family: var(--font-family);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      padding: 2rem 4rem;
+      border-bottom: 1px solid var(--border-color);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .logo-icon {
+      font-size: 2rem;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .logo-text {
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -0.025em;
+    }
+
+    .badge {
+      background: rgba(99, 102, 241, 0.1);
+      border: 1px solid rgba(99, 102, 241, 0.2);
+      color: #818cf8;
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    main {
+      flex: 1;
+      max-width: 1400px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 2.5rem 4rem;
+      display: grid;
+      grid-template-columns: 380px 1fr;
+      gap: 2.5rem;
+    }
+
+    /* SOL KOLON - FORM */
+    .sidebar {
+      background: var(--panel-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: 2rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+      height: fit-content;
+    }
+
+    .section-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+
+    label {
+      display: block;
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+    }
+
+    input, textarea {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 0.85rem 1rem;
+      color: var(--text-main);
+      font-family: var(--font-family);
+      font-size: 0.95rem;
+      transition: all 0.25s ease;
+    }
+
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      background: rgba(255, 255, 255, 0.05);
+      box-shadow: 0 0 15px var(--glow-color);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+
+    button {
+      width: 100%;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      border: none;
+      border-radius: 12px;
+      padding: 1rem;
+      color: white;
+      font-family: var(--font-family);
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      box-shadow: 0 4px 20px rgba(99, 102, 241, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 25px rgba(99, 102, 241, 0.5);
+    }
+
+    button:active {
+      transform: translateY(0);
+    }
+
+    /* SAĞ KOLON - PANEL */
+    .dashboard-content {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .placeholder-view {
+      background: var(--panel-bg);
+      border: 2px dashed rgba(255, 255, 255, 0.05);
+      border-radius: 20px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 4rem;
+      text-align: center;
+      color: var(--text-muted);
+    }
+
+    .placeholder-icon {
+      font-size: 4rem;
+      margin-bottom: 1.5rem;
+      opacity: 0.6;
+    }
+
+    /* HAVA DURUMU KARTLARI */
+    .weather-summary-box {
+      background: var(--panel-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: 1.75rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+      display: none; /* js ile açılacak */
+      animation: fadeIn 0.4s ease forwards;
+    }
+
+    .city-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.25rem;
+    }
+
+    .city-name {
+      font-size: 1.75rem;
+      font-weight: 700;
+    }
+
+    .weather-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 1rem;
+    }
+
+    .weather-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      border-radius: 14px;
+      padding: 1rem;
+      text-align: center;
+      transition: all 0.2s ease;
+    }
+
+    .weather-card:hover {
+      background: rgba(255, 255, 255, 0.04);
+      transform: translateY(-2px);
+    }
+
+    .card-time {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+
+    .card-icon {
+      font-size: 1.75rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .card-temp {
+      font-size: 1.15rem;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .card-desc {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* AI ÖNERİ KUTUSU */
+    .ai-analysis-box {
+      background: var(--panel-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: 2.25rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+      display: none; /* js ile açılacak */
+      animation: fadeIn 0.4s ease forwards;
+    }
+
+    .ai-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .ai-avatar {
+      width: 42px;
+      height: 42px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      box-shadow: 0 0 15px rgba(99, 102, 241, 0.4);
+    }
+
+    .ai-title-text h3 {
+      font-size: 1.15rem;
+      font-weight: 600;
+    }
+
+    .ai-title-text p {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .ai-response {
+      line-height: 1.7;
+      font-size: 0.95rem;
+      color: #e5e7eb;
+    }
+
+    /* Basit Markdown Stilleri */
+    .ai-response h3 {
+      font-size: 1.1rem;
+      margin-top: 1.5rem;
+      margin-bottom: 0.75rem;
+      color: #818cf8;
+      border-left: 3px solid var(--accent);
+      padding-left: 0.5rem;
+    }
+
+    .ai-response ul {
+      margin-left: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .ai-response li {
+      margin-bottom: 0.5rem;
+    }
+
+    .ai-response strong {
+      color: white;
+    }
+
+    .ai-response hr {
+      border: 0;
+      border-top: 1px solid var(--border-color);
+      margin: 1.5rem 0;
+    }
+
+    /* LOADING SPINNER */
+    .loading-container {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      margin: 4rem 0;
+    }
+
+    .spinner {
+      width: 50px;
+      height: 50px;
+      border: 3px solid rgba(99, 102, 241, 0.1);
+      border-radius: 50%;
+      border-top-color: var(--primary);
+      border-right-color: var(--accent);
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Responsive Tasarım */
+    @media (max-width: 1024px) {
+      main {
+        grid-template-columns: 1fr;
+        padding: 1.5rem;
+      }
+      header {
+        padding: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo-container">
+      <div class="logo-icon">🌤️</div>
+      <div>
+        <h1 class="logo-text">Akıllı Hava Durumu</h1>
+      </div>
+    </div>
+    <span class="badge">Model: gemini-3.5-flash</span>
+  </header>
+
+  <main>
+    <!-- SOL KOLON -->
+    <div class="sidebar">
+      <h2 class="section-title">🧭 Rota Oluşturucu</h2>
+      <form id="advisorForm" onsubmit="handleDemoSubmit(event)">
+        <div class="form-group">
+          <label for="cityInput">📍 Hedef Şehir</label>
+          <input type="text" id="cityInput" placeholder="Örn: Sakarya, İstanbul, Antalya..." required>
+        </div>
+        <div class="form-group">
+          <label for="planInput">📝 Aktivite Planınız</label>
+          <textarea id="planInput" placeholder="Örn: Yarın öğleden sonra arkadaşlarımla doğa yürüyüşü ve fotoğraf çekimi yapacağım. Ne giymeliyim ve ne zaman çıkmalıyım?" required></textarea>
+        </div>
+        <button type="submit">
+          <span>🔮 Analiz Et & Öneri Al</span>
+        </button>
+      </form>
+    </div>
+
+    <!-- SAĞ KOLON -->
+    <div class="dashboard-content">
+      <!-- Başlangıç Görünümü -->
+      <div id="placeholder" class="placeholder-view">
+        <div class="placeholder-icon">🔮</div>
+        <h2>Seyahat Analiz Paneli</h2>
+        <p>Sol taraftan bir şehir adı ve seyahat planı girerek yapay zeka destekli önerileri anında görüntüleyebilirsiniz.</p>
+      </div>
+
+      <!-- Yükleniyor Durumu -->
+      <div id="loading" class="loading-container">
+        <div class="spinner"></div>
+        <p style="color: var(--text-muted); font-size: 0.9rem;">Hava tahminleri alınıyor ve Yapay Zeka analiz ediyor...</p>
+      </div>
+
+      <!-- Hava Durumu Tahminleri -->
+      <div id="weatherBox" class="weather-summary-box">
+        <div class="city-header">
+          <h2 class="city-name" id="cityNameDisplay">Sakarya</h2>
+          <span style="color: var(--text-muted); font-size: 0.85rem;">24 Saatlik Tahmin</span>
+        </div>
+        <div class="weather-cards-grid" id="weatherGrid">
+          <!-- JS ile doldurulacak -->
+        </div>
+      </div>
+
+      <!-- AI Tavsiye Paneli -->
+      <div id="aiBox" class="ai-analysis-box">
+        <div class="ai-header">
+          <div class="ai-avatar">🤖</div>
+          <div class="ai-title-text">
+            <h3>Akıllı Seyahat Asistanı</h3>
+            <p>Canlı Hava Durumu Analiz Raporu</p>
+          </div>
+        </div>
+        <div class="ai-response" id="aiResponseText">
+          <!-- JS ile doldurulacak -->
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // Demo Mock Verileri (Sakarya ve Antalya için özel demo veri kümesi)
+    const mockData = {
+      sakarya: {
+        city: "Sakarya",
+        forecast: [
+          { time: "Yarın 12:00", temp: "34°C", desc: "Açık", icon: "☀️" },
+          { time: "Yarın 15:00", temp: "33°C", desc: "Açık", icon: "☀️" },
+          { time: "Yarın 18:00", temp: "29°C", desc: "Az Bulutlu", icon: "⛅" },
+          { time: "Yarın 21:00", temp: "25°C", desc: "Açık", icon: "🌙" }
+        ],
+        aiResponse: `
+          <h3>1. Hava Durumu Yorumu</h3>
+          <p>Yarın öğleden sonra Sakarya'da oldukça <strong>sıcak ve tamamen açık</strong> bir hava hakim olacak. Sıcaklıklar <strong>33°C - 34°C</strong> civarında seyrediyor. Nem oranının düşük olması (%21) hissedilen sıcaklığı dengelese de doğrudan güneş altında 3-4 saat kalmak yorucu olacaktır. Yağış ihtimali ise %0.</p>
+          <hr>
+          <h3>2. Kıyafet & Aksesuar Önerileri</h3>
+          <ul>
+            <li><strong>Üst Giyim:</strong> Teri yansıtan açık renkli (beyaz, bej, krem) keten veya teknik tişörtler tercih edilmelidir.</li>
+            <li><strong>Alt Giyim:</strong> Patikalardaki bitki ve böceklerden korunmak için hafif trekking pantolonları giyilmesi önerilir.</li>
+            <li><strong>Aksesuarlar:</strong> Güneş gözlüğü, 50+ SPF güneş kremi ve geniş siperlikli şapka mutlaka yanınızda olmalı.</li>
+          </ul>
+          <hr>
+          <h3>3. Etkinlik İçin En İdeal Saat Aralığı</h3>
+          <p>Öğle sıcağını atlatmak ve fotoğraflar için en yumuşak ışığı yakalamak adına en uygun saat aralığı <strong>16:30 - 20:00</strong>'dir. Bu saatler fotoğraftaki "Golden Hour" (Altın Saat) ışığına denk gelir.</p>
+        `
+      },
+      antalya: {
+        city: "Antalya",
+        forecast: [
+          { time: "Yarın 12:00", temp: "38°C", desc: "Aşırı Sıcak", icon: "🔥" },
+          { time: "Yarın 15:00", temp: "37°C", desc: "Aşırı Sıcak", icon: "🔥" },
+          { time: "Yarın 18:00", temp: "32°C", desc: "Açık", icon: "☀️" },
+          { time: "Yarın 21:00", temp: "29°C", desc: "Açık", icon: "🌙" }
+        ],
+        aiResponse: `
+          <h3>1. Hava Durumu Yorumu</h3>
+          <p>Antalya yarın aşırı sıcak bir gün geçiriyor (ortalama <strong>38°C</strong>). Nem oranı akşam saatlerinde artacak. Bu sıcaklıkta açık havada ağır aktiviteler ısı çarpmalarına sebep olabilir.</p>
+          <hr>
+          <h3>2. Kıyafet & Aksesuar Önerileri</h3>
+          <ul>
+            <li><strong>Üst Giyim:</strong> Çok hafif, terletmeyen bol tişörtler.</li>
+            <li><strong>Aksesuarlar:</strong> UV filtreli güneş gözlüğü ve kesinlikle güneş kremi.</li>
+            <li><strong>Su:</strong> Yanınıza alacağınız su miktarını iki katına çıkarın.</li>
+          </ul>
+          <hr>
+          <h3>3. Etkinlik İçin En İdeal Saat Aralığı</h3>
+          <p>Dışarıda vakit geçirmek için en güvenli saat aralığı güneş etkisini yitirdiği <strong>18:30'dan sonrasıdır</strong>.</p>
+        `
+      },
+      genel: {
+        city: "Genel Şehir",
+        forecast: [
+          { time: "Yarın 12:00", temp: "24°C", desc: "Parçalı Bulutlu", icon: "⛅" },
+          { time: "Yarın 15:00", temp: "25°C", desc: "Açık", icon: "☀️" },
+          { time: "Yarın 18:00", temp: "22°C", desc: "Az Bulutlu", icon: "⛅" },
+          { time: "Yarın 21:00", temp: "18°C", desc: "Açık", icon: "🌙" }
+        ],
+        aiResponse: `
+          <h3>1. Hava Durumu Yorumu</h3>
+          <p>Yarın seçtiğiniz bölgede sıcaklıklar yürüyüş ve seyahat için son derece ideal (<strong>24°C - 25°C</strong>). Hava parçalı bulutlu olup rüzgar hafif şiddette esmektedir.</p>
+          <hr>
+          <h3>2. Kıyafet & Aksesuar Önerileri</h3>
+          <ul>
+            <li>Rahat bir spor ayakkabı ve gün içinde ısınan havaya göre katmanlı giyim (hafif bir hırka veya sweat).</li>
+          </ul>
+          <hr>
+          <h3>3. Etkinlik İçin En İdeal Saat Aralığı</h3>
+          <p>Günün her saati (özellikle <strong>11:00 - 17:00</strong> arası) konforlu bir şekilde dışarıda vakit geçirebilirsiniz.</p>
+        `
+      }
+    };
+
+    function handleDemoSubmit(event) {
+      event.preventDefault();
+      
+      const city = document.getElementById('cityInput').value.trim();
+      const plan = document.getElementById('planInput').value.trim();
+      
+      if (!city || !plan) return;
+
+      // Panelleri temizle ve yükleniyor durumunu aç
+      document.getElementById('placeholder').style.display = 'none';
+      document.getElementById('weatherBox').style.display = 'none';
+      document.getElementById('aiBox').style.display = 'none';
+      document.getElementById('loading').style.display = 'flex';
+
+      // 1.5 saniye yapay yükleme simülasyonu
+      setTimeout(() => {
+        document.getElementById('loading').style.display = 'none';
+        
+        // Uygun veriyi seç (Sakarya, Antalya veya Genel)
+        const key = city.toLowerCase().replace(/ı/g, 'i').replace(/ş/g, 's').replace(/ğ/g, 'g').replace(/ç/g, 'c').replace(/ü/g, 'u').replace(/ö/g, 'o');
+        const data = mockData[key] || mockData['genel'];
+
+        // Şehir adını yazdır
+        document.getElementById('cityNameDisplay').innerText = city.charAt(0).toUpperCase() + city.slice(1);
+
+        // Tahmin kartlarını oluştur
+        const grid = document.getElementById('weatherGrid');
+        grid.innerHTML = '';
+        data.forecast.forEach(item => {
+          grid.innerHTML += `
+            <div class="weather-card">
+              <span class="card-time">${item.time}</span>
+              <div class="card-icon">${item.icon}</div>
+              <div class="card-temp">${item.temp}</div>
+              <div class="card-desc">${item.desc}</div>
+            </div>
+          `;
+        });
+
+        // AI Yanıtını yazdır
+        document.getElementById('aiResponseText').innerHTML = data.aiResponse;
+
+        // Panelleri görünür yap
+        document.getElementById('weatherBox').style.display = 'block';
+        document.getElementById('aiBox').style.display = 'block';
+      }, 1500);
+    }
+  </script>
+</body>
+</html>

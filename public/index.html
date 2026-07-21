@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Akıllı Hava Durumu & Seyahat Danışmanı</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Arka Plan Parlama Efektleri (Blobs) -->
+  <div class="blob-glow blob-1"></div>
+  <div class="blob-glow blob-2"></div>
+
+  <header>
+    <div class="logo-container">
+      <div class="logo-icon">🌤️</div>
+      <div>
+        <h1 class="logo-text">Akıllı Hava Durumu & Seyahat Danışmanı</h1>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- SOL KOLON - FORM -->
+    <div class="sidebar">
+      <div class="sidebar-header">
+        <h2 class="section-title">🧭 Rota Oluşturucu</h2>
+        <span class="demo-link" id="demoLink">✨ Örnek Doldur</span>
+      </div>
+      <form id="advisorForm">
+        <div class="form-group" style="position: relative;">
+          <label for="cityInput">📍 Hedef Şehir</label>
+          <div class="input-with-action">
+            <input type="text" id="cityInput" placeholder="Örn: Sakarya, İstanbul, İzmir..." required autocomplete="off">
+            <button type="button" id="micCityBtn" class="mic-button" title="Sesli Söyle">🎙️</button>
+          </div>
+          <div id="autocompleteDropdown" class="autocomplete-dropdown" style="display: none;"></div>
+        </div>
+        <div class="form-group">
+          <label for="planInput">📝 Aktivite Planınız</label>
+          <div class="textarea-with-action">
+            <textarea id="planInput" placeholder="Örn: Yarın öğleden sonra arkadaşlarımla 3-4 saatlik doğa yürüyüşü yapıp fotoğraf çekeceğim. Ne giymeliyim?" required></textarea>
+            <button type="button" id="micPlanBtn" class="mic-button" title="Sesli Söyle">🎙️</button>
+          </div>
+        </div>
+        <button type="submit" id="submitBtn">
+          <span id="btnText">🔮 Analiz Et & Öneri Al</span>
+        </button>
+      </form>
+
+      <!-- GEÇMİŞ ARAMALAR PANELİ -->
+      <div class="history-container" id="historyContainer" style="display: none;">
+        <div class="history-header">
+          <h3 class="history-title">📜 Geçmiş Aramalar</h3>
+          <button type="button" class="clear-history-btn" id="clearHistoryBtn">Tümünü Temizle</button>
+        </div>
+        <div class="history-list" id="historyList">
+          <!-- Dinamik geçmiş elemanları buraya eklenecek -->
+        </div>
+      </div>
+    </div>
+
+    <!-- SAĞ KOLON - SONUÇLAR -->
+    <div class="dashboard-content">
+      <!-- Başlangıç Görünümü -->
+      <div id="placeholder" class="placeholder-view">
+        <div class="placeholder-hero">
+          <div class="hero-graphics">
+            <span class="hero-emoji float-sun">☀️</span>
+            <span class="hero-emoji float-cloud">☁️</span>
+            <span class="hero-emoji float-plane">✈️</span>
+            <span class="hero-emoji float-compass">🧭</span>
+          </div>
+          <h2>Rota Planlama & Hava Analiz Paneli</h2>
+          <p class="hero-subtitle">Seyahatinizden önce hedef şehrin canlı hava durumuna göre yapay zeka destekli kıyafet ve rota tavsiyelerini keşfedin.</p>
+        </div>
+        
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon">🌦️</div>
+            <h4>Canlı Tahminler</h4>
+            <p>24 saatlik sıcaklık, yağış ve rüzgar tahminleri</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🤖</div>
+            <h4>AI Danışmanlığı</h4>
+            <p>Aktivitenize özel akıllı giyim & rota analizleri</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">⚠️</div>
+            <h4>Ekstrem Uyarılar</h4>
+            <p>Aşırı sıcak, soğuk ve fırtına uyarı bildirimleri</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">📜</div>
+            <h4>Arama Geçmişi</h4>
+            <p>Önceki rotalara anında ve internetsiz erişim</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Yükleniyor Durumu -->
+      <div id="loading" class="loading-container">
+        <div class="spinner"></div>
+        <div class="loading-steps">
+          <div class="loading-step active" id="step1">
+            <span class="step-icon">🔍</span>
+            <span class="step-text">Canlı hava durumu verileri çekiliyor...</span>
+          </div>
+          <div class="loading-step" id="step2">
+            <span class="step-icon">🤖</span>
+            <span class="step-text">Yapay zeka seyahat planını analiz ediyor...</span>
+          </div>
+        </div>
+        <span id="retryIndicator" class="retry-badge" style="display: none;">Geçici yoğunluk var, yeniden deneniyor...</span>
+      </div>
+
+      <!-- Hata Görünümü -->
+      <div id="errorBox" class="error-view" style="display: none;">
+        <div class="error-icon">⚠️</div>
+        <h3 id="errorTitle">İşlem Başarısız</h3>
+        <p id="errorMessage"></p>
+      </div>
+
+      <!-- Ekstrem Hava Durumu Uyarıları -->
+      <div id="alertContainer" class="alerts-wrapper" style="display: none;"></div>
+
+      <!-- Hava Durumu Tahminleri -->
+      <div id="weatherBox" class="weather-summary-box">
+        <div class="city-header">
+          <h2 class="city-name" id="cityNameDisplay">Sakarya</h2>
+          <span style="color: var(--text-muted); font-size: 0.85rem;">24 Saatlik Tahmin</span>
+        </div>
+        <div class="weather-cards-grid" id="weatherGrid">
+          <!-- Dinamik olarak doldurulacak -->
+        </div>
+      </div>
+
+      <!-- AI Tavsiye Paneli -->
+      <div id="aiBox" class="ai-analysis-box">
+        <div class="ai-header">
+          <div class="ai-avatar">🤖</div>
+          <div class="ai-title-text">
+            <h3>Akıllı Seyahat Asistanı</h3>
+            <p>Canlı Hava Durumu Analiz Raporu</p>
+          </div>
+          <button id="ttsBtn" class="tts-button" title="Sesli Oku" style="display: none;">
+            <span class="tts-icon">🔊</span>
+            <span class="tts-text">Sesli Oku</span>
+          </button>
+        </div>
+        <div class="ai-response" id="aiResponseText">
+          <!-- Dinamik olarak doldurulacak -->
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Ses Tercihi Modalı (Custom Glassmorphic Modal) -->
+  <div id="ttsModal" class="tts-modal" style="display: none;">
+    <div class="tts-modal-content">
+      <h4>🔊 Sesli Okuma Tercihi</h4>
+      <p>Seyahat analizinizin özetini mi yoksa tamamını mı dinlemek istersiniz?</p>
+      <div class="tts-modal-actions">
+        <button id="ttsOptSummaryBtn" class="tts-opt-btn summary">📝 Özetini Dinle</button>
+        <button id="ttsOptFullBtn" class="tts-opt-btn full">📖 Tamamını Dinle</button>
+        <button id="ttsOptCancelBtn" class="tts-opt-btn cancel">❌ İptal</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sesli Asistan Dinleme Paneli -->
+  <div id="voiceAssistantPanel" class="voice-assistant-panel" style="display: none;">
+    <div class="voice-assistant-content">
+      <div class="voice-wave-container">
+        <div class="voice-wave-bar bar1"></div>
+        <div class="voice-wave-bar bar2"></div>
+        <div class="voice-wave-bar bar3"></div>
+        <div class="voice-wave-bar bar4"></div>
+        <div class="voice-wave-bar bar5"></div>
+      </div>
+      <div class="voice-assistant-text">
+        <p class="voice-status">🎙️ Asistan Dinliyor...</p>
+        <p class="voice-hint">"Evet" veya "Hayır" deyin, ya da yeni planınızı söyleyin.</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
