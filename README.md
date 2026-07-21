@@ -47,4 +47,6 @@ Bu dosya, tarayıcıda çalışan ve kullanıcının gördüğü tüm dinamik et
    ```bash
    npm start
    ```
-   Uygulama otomatik olarak tarayıcınızda açılacaktır: http://localhost:3000
+   Uygulama otomatik olarak tarayıcınızda açılacaktır:
+   * Varsayılan ayarları kullanıyorsanız: [http://localhost:3000](http://localhost:3000)
+   * Kendi bilgisayarınızda özel isim ve port 80 ayarladıysanız: [http://seyahat.asistani](http://seyahat.asistani)
